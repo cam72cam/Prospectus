@@ -1,0 +1,16 @@
+[
+{
+  "modid": "prospectus",
+  "name": "Prospectus",
+  "description": "Adds prospecting mechanic to the game",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["cam72cam"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
