@@ -2,6 +2,7 @@ package cam72cam.prospectus;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
@@ -17,9 +18,9 @@ public class Prospectus
 {
     public static final String MODID = "prospectus";
     public static final String VERSION = "0.1";
-    public static final Item ITEM_PROSPECTOR_STONE = new ProspectorPickItem("stone", 16, 5);
-    public static final Item ITEM_PROSPECTOR_IRON = new ProspectorPickItem("iron", 16, 20);
-    public static final Item ITEM_PROSPECTOR_DIAMOND = new ProspectorPickItem("diamond", 16, 60);
+    public static final Item ITEM_PROSPECTOR_STONE = new ProspectorPickItem(ToolMaterial.STONE, 16, 5);
+    public static final Item ITEM_PROSPECTOR_IRON = new ProspectorPickItem(ToolMaterial.IRON, 16, 20);
+    public static final Item ITEM_PROSPECTOR_DIAMOND = new ProspectorPickItem(ToolMaterial.DIAMOND, 16, 60);
     
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {

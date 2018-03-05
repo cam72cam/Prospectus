@@ -1,12 +1,14 @@
 package cam72cam.prospectus;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemTool;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -15,19 +17,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
-public class ProspectorPickItem extends Item {
+public class ProspectorPickItem extends ItemTool {
 	public static final String NAME = "item_prospector_";
 	
 	private final int radius;
 	public final int accuracy;
 	
-	public ProspectorPickItem(String type, int radius, int accuracy) {
-		super();
-		setUnlocalizedName(Prospectus.MODID + ":" + NAME + type);
-        setRegistryName(new ResourceLocation(Prospectus.MODID, NAME + type));
-        this.setCreativeTab(CreativeTabs.TOOLS);
-        this.setMaxStackSize(1);
-        this.setMaxDamage(100);
+	public ProspectorPickItem(Item.ToolMaterial type, int radius, int accuracy) {
+		super(type, new HashSet<Block>());
+		setUnlocalizedName(Prospectus.MODID + ":" + NAME + type.toString().toLowerCase());
+        setRegistryName(new ResourceLocation(Prospectus.MODID, NAME + type.toString().toLowerCase()));
         
 		this.radius = radius; 
 		this.accuracy = accuracy;
