@@ -1,7 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "minecraft:items/diamond_shovel",
-    "layer1": "minecraft:items/diamond_pickaxe"
+    "layer0": "prospectus:items/prospector_diamond"
   }
 }

@@ -43,7 +43,7 @@ public class ProspectorPickItem extends ItemTool {
 		Map<String, Integer> counts = new HashMap<String, Integer>();
 		
 		for (int x = -radius; x < radius; x++) {
-			for (int y = 0; y < radius; y++) {
+			for (int y = -radius; y < radius; y++) {
 				for (int z = -radius; z < radius; z++) {
 					if (Math.random() * 100 < accuracy) {
 						BlockPos curr = pos.down(y).east(x).north(z);
@@ -67,14 +67,14 @@ public class ProspectorPickItem extends ItemTool {
 		for (String key : counts.keySet()) {
 			String val = "";
 			Integer count = counts.get(key);
-			double scale =  Math.pow(radius / 16, 2) * (accuracy / 5);
-			if (count < 5 * scale) {
-				val = "A Trace of ";
-			} else if (count < 10 * scale) {
+			double scale =  Math.pow(radius, 3)*0.01; // This now searches based on the % of nearby blocks which are ore
+			if (count < Config.traceMin * scale) {
+				val = "Traces of ";
+			} else if (count < Config.smallMin * scale) {
 				val = "A Small Sample of ";
-			} else if (count < 20 * scale) {
+			} else if (count < Config.mediumMin * scale) {
 				val = "A Medium Sample of ";
-			} else if (count < 30 * scale) {
+			} else if (count < Config.largeMin * scale) {
 				val = "A Large Sample of ";
 			} else {
 				val = "The Motherload of ";

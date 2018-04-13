@@ -6,23 +6,26 @@ import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.apache.logging.log4j.Logger;
+
+import java.io.File;
 
 @Mod(modid = Prospectus.MODID, version = Prospectus.VERSION, dependencies = "after:thermalfoundation")
 public class Prospectus
 {
     public static final String MODID = "prospectus";
     public static final String VERSION = "0.2";
-    public static final Item ITEM_PROSPECTOR_STONE = new ProspectorPickItem(ToolMaterial.STONE, 16, 10);
-    public static final Item ITEM_PROSPECTOR_IRON = new ProspectorPickItem(ToolMaterial.IRON, 16, 45);
-    public static final Item ITEM_PROSPECTOR_DIAMOND = new ProspectorPickItem(ToolMaterial.DIAMOND, 16, 60);
+    public static Item ITEM_PROSPECTOR_STONE;
+    public static Item ITEM_PROSPECTOR_IRON;
+    public static Item ITEM_PROSPECTOR_DIAMOND;
 
     public static Item ITEM_PROSPECTOR_TF_COPPER;
     public static Item ITEM_PROSPECTOR_TF_TIN;
@@ -32,18 +35,31 @@ public class Prospectus
 
     public static boolean addTETools;
 
+    public static Configuration config;
+    public static Logger logger;
+
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
     	MinecraftForge.EVENT_BUS.register(this);
 
-    	addTETools = Loader.isModLoaded("thermalfoundation");
+        // Register Config
+        File directory = event.getModConfigurationDirectory();
+        config = new Configuration(new File(directory.getPath(), "prospectus.cfg"));
+        Config.readConfig();
 
+        // Vanilla Tools (Stone, Iron, Diamond)
+        ITEM_PROSPECTOR_STONE = new ProspectorPickItem(ToolMaterial.STONE, Config.globalRadius, Config.stoneAcc);
+        ITEM_PROSPECTOR_IRON = new ProspectorPickItem(ToolMaterial.IRON, Config.globalRadius, Config.ironAcc);
+        ITEM_PROSPECTOR_DIAMOND = new ProspectorPickItem(ToolMaterial.DIAMOND, Config.globalRadius, Config.diamondAcc);
+
+        // Thermal Foundation Tools (Copper, Tin, Bronze, Invar, Steel)
+        addTETools = Loader.isModLoaded("thermalfoundation") && Config.loadTF;
     	if(addTETools){
-    	    ITEM_PROSPECTOR_TF_COPPER = new ProspectorPickItem(ToolMaterial.valueOf("TF:COPPER"), 16, 20);
-    	    ITEM_PROSPECTOR_TF_TIN = new ProspectorPickItem(ToolMaterial.valueOf("TF:TIN"), 16, 25);
-    	    ITEM_PROSPECTOR_TF_BRONZE = new ProspectorPickItem(ToolMaterial.valueOf("TF:BRONZE"), 16, 35);
-    	    ITEM_PROSPECTOR_TF_STEEL = new ProspectorPickItem(ToolMaterial.valueOf("TF:STEEL"), 16, 70);
-    	    ITEM_PROSPECTOR_TF_INVAR = new ProspectorPickItem(ToolMaterial.valueOf("TF:INVAR"), 16, 85);
+    	    ITEM_PROSPECTOR_TF_COPPER = new ProspectorPickItem(ToolMaterial.valueOf("TF:COPPER"), Config.globalRadius, Config.copperAcc);
+    	    ITEM_PROSPECTOR_TF_TIN = new ProspectorPickItem(ToolMaterial.valueOf("TF:TIN"), Config.globalRadius, Config.tinAcc);
+    	    ITEM_PROSPECTOR_TF_BRONZE = new ProspectorPickItem(ToolMaterial.valueOf("TF:BRONZE"), Config.globalRadius, Config.bronzeAcc);
+    	    ITEM_PROSPECTOR_TF_STEEL = new ProspectorPickItem(ToolMaterial.valueOf("TF:STEEL"), Config.globalRadius, Config.steelAcc);
+    	    ITEM_PROSPECTOR_TF_INVAR = new ProspectorPickItem(ToolMaterial.valueOf("TF:INVAR"), Config.globalRadius, Config.invarAcc);
         }
     }
     
