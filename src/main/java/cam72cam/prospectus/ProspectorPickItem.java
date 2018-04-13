@@ -25,8 +25,8 @@ public class ProspectorPickItem extends ItemTool {
 	
 	public ProspectorPickItem(Item.ToolMaterial type, int radius, int accuracy) {
 		super(type, new HashSet<Block>());
-		setUnlocalizedName(Prospectus.MODID + ":" + NAME + type.toString().toLowerCase());
-        setRegistryName(new ResourceLocation(Prospectus.MODID, NAME + type.toString().toLowerCase()));
+		setUnlocalizedName(Prospectus.MODID + ":" + NAME + type.toString().toLowerCase().replace(":",""));
+        setRegistryName(new ResourceLocation(Prospectus.MODID, NAME + type.toString().toLowerCase().replace(":","")));
         
 		this.radius = radius; 
 		this.accuracy = accuracy;
@@ -69,13 +69,13 @@ public class ProspectorPickItem extends ItemTool {
 			Integer count = counts.get(key);
 			double scale =  Math.pow(radius / 16, 2) * (accuracy / 5);
 			if (count < 5 * scale) {
-				val = "A Few ";
+				val = "A Trace of ";
 			} else if (count < 10 * scale) {
-				val = "A Handfull of ";
+				val = "A Small Sample of ";
 			} else if (count < 20 * scale) {
-				val = "A Bunch of ";
+				val = "A Medium Sample of ";
 			} else if (count < 30 * scale) {
-				val = "A Ton of ";
+				val = "A Large Sample of ";
 			} else {
 				val = "The Motherload of ";
 			}
