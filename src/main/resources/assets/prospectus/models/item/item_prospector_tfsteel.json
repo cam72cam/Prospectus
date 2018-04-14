@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "prospectus:items/prospector_diamond"
+    "layer0": "prospectus:items/prospector_tfsteel"
   }
 }

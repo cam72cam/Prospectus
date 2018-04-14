@@ -25,8 +25,8 @@ public class ProspectorPickItem extends ItemTool {
 	
 	public ProspectorPickItem(Item.ToolMaterial type, int radius, int accuracy) {
 		super(type, new HashSet<Block>());
-		setUnlocalizedName(Prospectus.MODID + ":" + NAME + type.toString().toLowerCase());
-        setRegistryName(new ResourceLocation(Prospectus.MODID, NAME + type.toString().toLowerCase()));
+		setUnlocalizedName(Prospectus.MODID + ":" + NAME + type.toString().toLowerCase().replace(":",""));
+        setRegistryName(new ResourceLocation(Prospectus.MODID, NAME + type.toString().toLowerCase().replace(":","")));
         
 		this.radius = radius; 
 		this.accuracy = accuracy;
@@ -41,9 +41,11 @@ public class ProspectorPickItem extends ItemTool {
 		player.getHeldItem(hand).damageItem(1, player);
 		
 		Map<String, Integer> counts = new HashMap<String, Integer>();
+
+		int upperbound = Config.shouldScanAbove ? -radius:0;
 		
 		for (int x = -radius; x < radius; x++) {
-			for (int y = 0; y < radius; y++) {
+			for (int y = upperbound; y < radius; y++) {
 				for (int z = -radius; z < radius; z++) {
 					if (Math.random() * 100 < accuracy) {
 						BlockPos curr = pos.down(y).east(x).north(z);
@@ -67,15 +69,15 @@ public class ProspectorPickItem extends ItemTool {
 		for (String key : counts.keySet()) {
 			String val = "";
 			Integer count = counts.get(key);
-			double scale =  Math.pow(radius / 16, 2) * (accuracy / 5);
-			if (count < 5 * scale) {
-				val = "A Few ";
-			} else if (count < 10 * scale) {
-				val = "A Handfull of ";
-			} else if (count < 20 * scale) {
-				val = "A Bunch of ";
-			} else if (count < 30 * scale) {
-				val = "A Ton of ";
+			double scale =  Math.pow(radius, 3)*0.01; // This now searches based on the % of nearby blocks which are ore
+			if (count < Config.traceMin * scale) {
+				val = "Traces of ";
+			} else if (count < Config.smallMin * scale) {
+				val = "A Small Sample of ";
+			} else if (count < Config.mediumMin * scale) {
+				val = "A Medium Sample of ";
+			} else if (count < Config.largeMin * scale) {
+				val = "A Large Sample of ";
 			} else {
 				val = "The Motherload of ";
 			}

@@ -1,3 +1,10 @@
 item.prospectus:item_prospector_stone.name=Stone Prospecting Pick
 item.prospectus:item_prospector_iron.name=Iron Prospecting Pick
 item.prospectus:item_prospector_diamond.name=Diamond Prospecting Pick
+
+# Thermal Foundation Tools
+item.prospectus:item_prospector_tfcopper.name=Copper Prospecting Pick
+item.prospectus:item_prospector_tftin.name=Tin Prospecting Pick
+item.prospectus:item_prospector_tfinvar.name=Invar Prospecting Pick
+item.prospectus:item_prospector_tfsteel.name=Steel Prospecting Pick
+item.prospectus:item_prospector_tfbronze.name=Bronze Prospecting Pick
