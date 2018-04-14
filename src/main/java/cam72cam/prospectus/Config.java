@@ -1,72 +1,45 @@
 package cam72cam.prospectus;
 
-import net.minecraftforge.common.config.Configuration;
-import org.apache.logging.log4j.Level;
+import net.minecraftforge.common.config.Config.Comment;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
+@net.minecraftforge.common.config.Config(modid=Prospectus.MODID)
 public class Config {
 
-    private static final String GENERAL = "General Options";
-    private static final String ACC = "The accuracy of each tool material";
 
-    // Config options:
-    public static boolean loadTF;
-    public static int globalRadius;
+    @Comment({"Should Prospectus create tools from Thermal Foundation metals?"})
+    public static boolean loadTF = true;
 
-    public static int stoneAcc;
-    public static int ironAcc;
-    public static int diamondAcc;
+    @Comment({"Radius for prospecting pick to scan for ores [range 1 ~ 32, default 12]"})
+    public static int globalRadius = 12;
 
-    public static int copperAcc;
-    public static int tinAcc;
-    public static int bronzeAcc;
-    public static int invarAcc;
-    public static int steelAcc;
+    @Comment({"Should the prospecting pick scan for ore blocks in the stone above it?"})
+    public static boolean shouldScanAbove = false;
 
-    public static int traceMin;
-    public static int smallMin;
-    public static int mediumMin;
-    public static int largeMin;
+    @Comment({"Accuracy of stone pick [range 1 ~ 100, default 5]"})
+    public static int stoneAcc = 5;
+    @Comment({"Accuracy of iron pick [range 1 ~ 100, default 20]"})
+    public static int ironAcc = 20;
+    @Comment({"Accuracy of diamond pick [range 1 ~ 100, default 60]"})
+    public static int diamondAcc = 60;
 
-    // This will create the config if it doesn't exist yet and read the values if it does exist.
-    public static void readConfig() {
-        Configuration cfg = Prospectus.config;
-        try {
-            cfg.load();
-            initConfig(cfg);
-        } catch (Exception problem) {
-            Prospectus.logger.log(Level.ERROR, "Problem loading config file!", problem);
-        } finally {
-            if (cfg.hasChanged()) {
-                cfg.save();
-            }
-        }
-    }
+    @Comment({"Accuracy of copper pick [range 1 ~ 100, default 10]"})
+    public static int copperAcc = 10;
+    @Comment({"Accuracy of tin pick [range 1 ~ 100, default 15]"})
+    public static int tinAcc = 15;
+    @Comment({"Accuracy of bronze pick [range 1 ~ 100, default 35]"})
+    public static int bronzeAcc = 35;
+    @Comment({"Accuracy of invar pick [range 1 ~ 100, default 65]"})
+    public static int invarAcc = 65;
+    @Comment({"Accuracy of steel pick [range 1 ~ 100, default 80]"})
+    public static int steelAcc = 80;
 
-    private static void initConfig(Configuration cfg) {
+    @Comment({"The amount of ore (In percent of nearby stone) to qualify as a small sample [range 1 ~ 100, default 1]"})
+    public static int traceMin = 1;
+    @Comment({"The amount of ore (In percent of nearby stone) to qualify as a medium sample [range 1 ~ 100, default 2]"})
+    public static int smallMin = 2;
+    @Comment({"The amount of ore (In percent of nearby stone) to qualify as a large sample [range 1 ~ 100, default 4]"})
+    public static int mediumMin = 4;
+    @Comment({"The amount of ore (In percent of nearby stone) to qualify as a motherload [range 1 ~ 100, default 6]"})
+    public static int largeMin = 6;
 
-        loadTF = cfg.getBoolean("tf_tools",GENERAL,true,"If Thermal Foundation is installed, should Prospectus add tools for TF's metals?");
-
-        globalRadius = cfg.getInt("Radius to search",GENERAL,12,1,32,"When prospecting, the pick will search up to this radius horizontally and vertically");
-
-        traceMin = cfg.getInt("Max ore for trace:",GENERAL,1,1,100,"The amount of ore (in percent of nearby stone) to qualify as a small sample");
-        smallMin = cfg.getInt("Max ore for small:",GENERAL,2,1,100,"The amount of ore (in percent of nearby stone) to qualify as a medium sample");
-        mediumMin = cfg.getInt("Max ore for med:",GENERAL,4,1,100,"The amount of ore (in percent of nearby stone) to qualify as a large sample");
-        largeMin = cfg.getInt("Max ore for large:",GENERAL,6,1,100,"The amount of ore (in percent of nearby stone) to qualify as a motherload");
-
-        stoneAcc = cfg.getInt("Stone Accuracy",ACC,5,1,100,"");
-        ironAcc = cfg.getInt("Iron Accuracy",ACC,20,1,100,"");
-        diamondAcc = cfg.getInt("Diamond Accuracy",ACC,60,1,100,"");
-
-        copperAcc = cfg.getInt("Copper Accuracy",ACC,10,1,100,"");
-        tinAcc = cfg.getInt("Tin Accuracy",ACC,15,1,100,"");
-        bronzeAcc = cfg.getInt("Bronze Accuracy",ACC,35,1,100,"");
-        invarAcc = cfg.getInt("Invar Accuracy",ACC,65,1,100,"");
-        steelAcc = cfg.getInt("Steel Accuracy",ACC,80,1,100,"");
-
-    }
 }

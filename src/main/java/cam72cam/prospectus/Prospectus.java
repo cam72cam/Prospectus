@@ -16,8 +16,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-
 @Mod(modid = Prospectus.MODID, version = Prospectus.VERSION, dependencies = "after:thermalfoundation")
 public class Prospectus
 {
@@ -35,17 +33,9 @@ public class Prospectus
 
     public static boolean addTETools;
 
-    public static Configuration config;
-    public static Logger logger;
-
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
     	MinecraftForge.EVENT_BUS.register(this);
-
-        // Register Config
-        File directory = event.getModConfigurationDirectory();
-        config = new Configuration(new File(directory.getPath(), "prospectus.cfg"));
-        Config.readConfig();
 
         // Vanilla Tools (Stone, Iron, Diamond)
         ITEM_PROSPECTOR_STONE = new ProspectorPickItem(ToolMaterial.STONE, Config.globalRadius, Config.stoneAcc);
@@ -100,6 +90,5 @@ public class Prospectus
     	    ModelLoader.setCustomModelResourceLocation(ITEM_PROSPECTOR_TF_INVAR,0,new ModelResourceLocation(ITEM_PROSPECTOR_TF_INVAR.getRegistryName(),"inventory"));
     	    ModelLoader.setCustomModelResourceLocation(ITEM_PROSPECTOR_TF_STEEL,0,new ModelResourceLocation(ITEM_PROSPECTOR_TF_STEEL.getRegistryName(),"inventory"));
         }
-        System.out.println("Loaded Item Models");
     }
 }

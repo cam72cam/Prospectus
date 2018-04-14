@@ -41,9 +41,11 @@ public class ProspectorPickItem extends ItemTool {
 		player.getHeldItem(hand).damageItem(1, player);
 		
 		Map<String, Integer> counts = new HashMap<String, Integer>();
+
+		int upperbound = Config.shouldScanAbove ? -radius:0;
 		
 		for (int x = -radius; x < radius; x++) {
-			for (int y = -radius; y < radius; y++) {
+			for (int y = upperbound; y < radius; y++) {
 				for (int z = -radius; z < radius; z++) {
 					if (Math.random() * 100 < accuracy) {
 						BlockPos curr = pos.down(y).east(x).north(z);
