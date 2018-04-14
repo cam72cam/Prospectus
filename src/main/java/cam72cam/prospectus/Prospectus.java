@@ -6,15 +6,15 @@ import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.apache.logging.log4j.Logger;
 
 @Mod(modid = Prospectus.MODID, version = Prospectus.VERSION, dependencies = "after:thermalfoundation")
 public class Prospectus
@@ -76,6 +76,13 @@ public class Prospectus
             );
         }
     }
+    
+    @SubscribeEvent
+	public void configChanged(OnConfigChangedEvent event) {
+		if (event.getModID().equals(MODID)) {
+			ConfigManager.sync(MODID, net.minecraftforge.common.config.Config.Type.INSTANCE);
+		}
+	}
     
     @SubscribeEvent
     public void registerModels(ModelRegistryEvent event) {
