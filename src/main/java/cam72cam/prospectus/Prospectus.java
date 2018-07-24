@@ -29,7 +29,7 @@ import java.util.List;
 public class Prospectus
 {
     public static final String MODID = "prospectus";
-    static final String VERSION = "1.2";
+    static final String VERSION = "1.3";
 
     public static ItemProspector prospectorWood;
     public static ItemProspector prospectorStone;

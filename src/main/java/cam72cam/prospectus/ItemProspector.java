@@ -45,8 +45,10 @@ public class ItemProspector extends ItemTool {
 			default:
 				ingot = "ingot"+VARIANT.substring(0, 1).toUpperCase() + VARIANT.substring(1);
 		}
-		System.out.println("ADDING A RECIPE: "+ingot);
-		Prospectus.addRecipe(new ItemStack(this), " S "," S ","III",'S',"stickWood",'I',ingot);
+		if(Config.useUpsidownRecipe)
+			Prospectus.addRecipe(new ItemStack(this), " S "," S ","III",'S',"stickWood",'I',ingot);
+		else
+			Prospectus.addRecipe(new ItemStack(this), " II", "IS ", " S ", 'S', "stickWood", 'I', ingot);
 	}
 	
 	@Override
@@ -83,25 +85,29 @@ public class ItemProspector extends ItemTool {
 				}
 			}
 		}
-		
-		player.sendMessage(new TextComponentString("Found: "));
-		for (String key : counts.keySet()) {
-			String val;
-			Integer count = counts.get(key);
-			double scale =  Math.pow(radius, 3)*0.01; // This now searches based on the % of nearby blocks which are ore
-			if (count < Config.traceMin * scale) {
-				val = "Traces of ";
-			} else if (count < Config.smallMin * scale) {
-				val = "A Small Sample of ";
-			} else if (count < Config.mediumMin * scale) {
-				val = "A Medium Sample of ";
-			} else if (count < Config.largeMin * scale) {
-				val = "A Large Sample of ";
-			} else {
-				val = "The Motherload of ";
+		if(!counts.keySet().isEmpty()) {
+			player.sendMessage(new TextComponentString("Found: "));
+			for (String key : counts.keySet()) {
+				String val;
+				Integer count = counts.get(key);
+				double scale = Math.pow(radius, 3) * 0.01; // This now searches based on the % of nearby blocks which are ore
+				if (count < Config.traceMin * scale) {
+					val = "Traces of ";
+				} else if (count < Config.smallMin * scale) {
+					val = "A Small Sample of ";
+				} else if (count < Config.mediumMin * scale) {
+					val = "A Medium Sample of ";
+				} else if (count < Config.largeMin * scale) {
+					val = "A Large Sample of ";
+				} else {
+					val = "The Motherload of ";
+				}
+
+				player.sendMessage(new TextComponentString("  " + val + key));
 			}
-			
-			player.sendMessage(new TextComponentString("  " + val + key));
+		}
+		else {
+			player.sendMessage(new TextComponentString("Found nothing of interest."));
 		}
 		
 		

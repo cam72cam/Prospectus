@@ -11,6 +11,9 @@ public class Config {
     @Comment({"Should the prospecting pick scan for ore blocks in the stone above it?"})
     public static boolean shouldScanAbove = false;
 
+    @Comment({"Upsidown pickaxe recipe or slightly bent pickaxe recipe?"})
+    public static boolean useUpsidownRecipe = true;
+
     @Comment({"Accuracy of stone pick [range 1 ~ 100, default 5]"})
     public static int WOOD_ACC = 5;
     @Comment({"Accuracy of stone pick [range 1 ~ 100, default 5]"})
