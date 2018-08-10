@@ -15,6 +15,7 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEve
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
@@ -22,35 +23,24 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.registries.GameData;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Mod(modid = Prospectus.MODID, version = Prospectus.VERSION)
 public class Prospectus
 {
-    public static final String MODID = "prospectus";
-    static final String VERSION = "1.3";
+    static final String MODID = "prospectus";
+    static final String VERSION = "1.4";
 
-    public static ItemProspector prospectorWood;
-    public static ItemProspector prospectorStone;
-    public static ItemProspector prospectorIron;
-    public static ItemProspector prospectorGold;
-    public static ItemProspector prospectorDiamond;
-    public static ItemProspector prospectorCopper;
-    public static ItemProspector prospectorTin;
-    public static ItemProspector prospectorLead;
-    public static ItemProspector prospectorSilver;
-    public static ItemProspector prospectorAluminum;
-    public static ItemProspector prospectorBronze;
-    public static ItemProspector prospectorSteel;
-    public static ItemProspector prospectorInvar;
-
-    public static List<ItemProspector> ITEMS = new ArrayList<>();
+    private static List<ItemProspector> ITEMS = new ArrayList<>();
+    private static List<ResourceLocation> ORES = new ArrayList<>();
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(this);
     }
+
     @EventHandler
     public void init(FMLInitializationEvent event){
         for(ItemProspector item : ITEMS){
@@ -59,23 +49,33 @@ public class Prospectus
         }
     }
 
+    @EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+        for (String s : Config.ORES) {
+            int colon = s.indexOf(':');
+            if (colon != -1)
+                ORES.add(new ResourceLocation(s.substring(0, colon), s.substring(colon + 1)));
+        }
+        ORES.forEach(p -> System.out.println("List: "+p.toString()));
+    }
+
     @SubscribeEvent
     public void registerItems(RegistryEvent.Register<Item> event)
     {
-        prospectorWood = new ItemProspector(ToolMaterial.WOOD, Config.WOOD_ACC);
-        prospectorStone = new ItemProspector(ToolMaterial.STONE, Config.STONE_ACC);
-        prospectorIron = new ItemProspector(ToolMaterial.IRON, Config.IRON_ACC);
-        prospectorGold = new ItemProspector(ToolMaterial.GOLD, Config.GOLD_ACC);
-        prospectorDiamond = new ItemProspector(ToolMaterial.DIAMOND, Config.DIAMOND_ACC);
+        ITEMS.add(new ItemProspector(ToolMaterial.WOOD, Config.WOOD_ACC));
+        ITEMS.add(new ItemProspector(ToolMaterial.STONE, Config.STONE_ACC));
+        ITEMS.add(new ItemProspector(ToolMaterial.IRON, Config.IRON_ACC));
+        ITEMS.add(new ItemProspector(ToolMaterial.GOLD, Config.GOLD_ACC));
+        ITEMS.add(new ItemProspector(ToolMaterial.DIAMOND, Config.DIAMOND_ACC));
 
-        if(hasIngot("Copper")) prospectorCopper = new ItemProspector(EnumHelper.addToolMaterial("COPPER",1,180,2.0F,1.0F,1), Config.COPPER_ACC);
-        if(hasIngot("Tin")) prospectorTin = new ItemProspector(EnumHelper.addToolMaterial("TIN",0,80,2.0F,1.0F,3), Config.TIN_ACC);
-        if(hasIngot("Silver")) prospectorSilver = new ItemProspector(EnumHelper.addToolMaterial("SILVER",0,100,2.0F,1.0F,12), Config.SILVER_ACC);
-        if(hasIngot("Lead")) prospectorLead = new ItemProspector(EnumHelper.addToolMaterial("LEAD",1,400,2.0F,1.0F,1), Config.LEAD_ACC);
-        if(hasIngot("Aluminum")) prospectorAluminum = new ItemProspector(EnumHelper.addToolMaterial("ALUMINUM",1,320,2.0F,1.0F,6), Config.ALUMINUM_ACC);
-        if(hasIngot("Bronze")) prospectorBronze = new ItemProspector(EnumHelper.addToolMaterial("BRONZE",2,800,2.0F,1.0F,3), Config.BRONZE_ACC);
-        if(hasIngot("Steel")) prospectorSteel = new ItemProspector(EnumHelper.addToolMaterial("STEEL",3,1400,2.0F,1.0F,6), Config.STEEL_ACC);
-        if(hasIngot("Invar")) prospectorInvar = new ItemProspector(EnumHelper.addToolMaterial("INVAR",3,1200,2.0F,1.0F,8), Config.INVAR_ACC);
+        if(hasIngot("Copper")) ITEMS.add(new ItemProspector(EnumHelper.addToolMaterial("COPPER",1,180,2.0F,1.0F,1), Config.COPPER_ACC));
+        if(hasIngot("Tin")) ITEMS.add(new ItemProspector(EnumHelper.addToolMaterial("TIN",0,80,2.0F,1.0F,3), Config.TIN_ACC));
+        if(hasIngot("Silver")) ITEMS.add(new ItemProspector(EnumHelper.addToolMaterial("SILVER",0,100,2.0F,1.0F,12), Config.SILVER_ACC));
+        if(hasIngot("Lead")) ITEMS.add(new ItemProspector(EnumHelper.addToolMaterial("LEAD",1,400,2.0F,1.0F,1), Config.LEAD_ACC));
+        if(hasIngot("Aluminum")) ITEMS.add(new ItemProspector(EnumHelper.addToolMaterial("ALUMINUM",1,320,2.0F,1.0F,6), Config.ALUMINUM_ACC));
+        if(hasIngot("Bronze")) ITEMS.add(new ItemProspector(EnumHelper.addToolMaterial("BRONZE",2,800,2.0F,1.0F,3), Config.BRONZE_ACC));
+        if(hasIngot("Steel")) ITEMS.add(new ItemProspector(EnumHelper.addToolMaterial("STEEL",3,1400,2.0F,1.0F,6), Config.STEEL_ACC));
+        if(hasIngot("Invar")) ITEMS.add(new ItemProspector(EnumHelper.addToolMaterial("INVAR",3,1200,2.0F,1.0F,8), Config.INVAR_ACC));
 
         for(Item item : ITEMS){
     	    if(item == null) continue;
@@ -103,10 +103,14 @@ public class Prospectus
         List<ItemStack> ingots = OreDictionary.getOres("ingot"+name);
         return !ingots.isEmpty();
     }
-    public static void addRecipe(@Nonnull ItemStack output, Object... params) {
+    static void addRecipe(@Nonnull ItemStack output, Object... params) {
         ResourceLocation location = new ResourceLocation(MODID,"recipe_"+output.getDisplayName());
         ShapedOreRecipe recipe = new ShapedOreRecipe(location, output, params);
         recipe.setRegistryName(location);
         GameData.register_impl(recipe);
+    }
+    static boolean isBlockWhitelisted(@Nullable ResourceLocation loc)
+    {
+        return loc != null && ORES.contains(loc);
     }
 }

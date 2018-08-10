@@ -1,11 +1,14 @@
 package cam72cam.prospectus;
 
-import net.minecraftforge.common.config.Config.Comment;
+import net.minecraftforge.common.config.Config.*;
 
-@net.minecraftforge.common.config.Config(modid=Prospectus.MODID)
+import static cam72cam.prospectus.Prospectus.MODID;
+
+@net.minecraftforge.common.config.Config(modid= MODID)
 public class Config {
 
-    @Comment({"Radius for prospecting pick to scan for ores [range 1 ~ 32, default 12]"})
+    @Comment({"Radius for prospecting pick to scan for ores [default 12]"})
+    @RangeInt(min = 1, max = 128)
     public static int globalRadius = 12;
 
     @Comment({"Should the prospecting pick scan for ore blocks in the stone above it?"})
@@ -14,41 +17,75 @@ public class Config {
     @Comment({"Upsidown pickaxe recipe or slightly bent pickaxe recipe?"})
     public static boolean useUpsidownRecipe = true;
 
-    @Comment({"Accuracy of stone pick [range 1 ~ 100, default 5]"})
+    @Comment({"Accuracy of stone pick [default 5]"})
+    @RangeInt(min = 1, max = 100)
     public static int WOOD_ACC = 5;
-    @Comment({"Accuracy of stone pick [range 1 ~ 100, default 5]"})
+
+    @Comment({"Accuracy of stone pick [default 5]"})
+    @RangeInt(min = 1, max = 100)
     public static int STONE_ACC = 5;
-    @Comment({"Accuracy of iron pick [range 1 ~ 100, default 20]"})
+
+    @Comment({"Accuracy of iron pick [default 20]"})
+    @RangeInt(min = 1, max = 100)
     public static int IRON_ACC = 20;
-    @Comment({"Accuracy of stone pick [range 1 ~ 100, default 5]"})
+
+    @Comment({"Accuracy of stone pick [default 5]"})
+    @RangeInt(min = 1, max = 100)
     public static int GOLD_ACC = 15;
-    @Comment({"Accuracy of diamond pick [range 1 ~ 100, default 60]"})
+
+    @Comment({"Accuracy of diamond pick [default 60]"})
+    @RangeInt(min = 1, max = 100)
     public static int DIAMOND_ACC = 50;
 
-    @Comment({"Accuracy of copper pick [range 1 ~ 100, default 10]"})
+    @Comment({"Accuracy of copper pick [default 10]"})
+    @RangeInt(min = 1, max = 100)
     public static int COPPER_ACC = 10;
-    @Comment({"Accuracy of tin pick [range 1 ~ 100, default 15]"})
+
+    @Comment({"Accuracy of tin pick [default 15]"})
+    @RangeInt(min = 1, max = 100)
     public static int TIN_ACC = 15;
-    @Comment({"Accuracy of lead pick [range 1 ~ 100, default 10]"})
+
+    @Comment({"Accuracy of lead pick [default 10]"})
+    @RangeInt(min = 1, max = 100)
     public static int LEAD_ACC = 20;
-    @Comment({"Accuracy of silver pick [range 1 ~ 100, default 15]"})
+
+    @Comment({"Accuracy of silver pick [default 15]"})
+    @RangeInt(min = 1, max = 100)
     public static int SILVER_ACC = 15;
-    @Comment({"Accuracy of silver pick [range 1 ~ 100, default 15]"})
+
+    @Comment({"Accuracy of silver pick [default 15]"})
+    @RangeInt(min = 1, max = 100)
     public static int ALUMINUM_ACC = 25;
-    @Comment({"Accuracy of bronze pick [range 1 ~ 100, default 35]"})
+
+    @Comment({"Accuracy of bronze pick [default 35]"})
+    @RangeInt(min = 1, max = 100)
     public static int BRONZE_ACC = 35;
-    @Comment({"Accuracy of invar pick [range 1 ~ 100, default 65]"})
+
+    @Comment({"Accuracy of invar pick [default 65]"})
+    @RangeInt(min = 1, max = 100)
     public static int INVAR_ACC = 45;
-    @Comment({"Accuracy of steel pick [range 1 ~ 100, default 80]"})
+
+    @Comment({"Accuracy of steel pick [default 80]"})
+    @RangeInt(min = 1, max = 100)
     public static int STEEL_ACC = 60;
 
-    @Comment({"The amount of ore (In percent of nearby stone) to qualify as a small sample [range 1 ~ 100, default 1]"})
+    @Comment({"The amount of ore (In percent of nearby stone) to qualify as a small sample [default 1]"})
+    @RangeInt(min = 1, max = 100)
     public static int traceMin = 1;
-    @Comment({"The amount of ore (In percent of nearby stone) to qualify as a medium sample [range 1 ~ 100, default 2]"})
+
+    @Comment({"The amount of ore (In percent of nearby stone) to qualify as a medium sample [default 2]"})
+    @RangeInt(min = 1, max = 100)
     public static int smallMin = 2;
-    @Comment({"The amount of ore (In percent of nearby stone) to qualify as a large sample [range 1 ~ 100, default 4]"})
+
+    @Comment({"The amount of ore (In percent of nearby stone) to qualify as a large sample [default 4]"})
+    @RangeInt(min = 1, max = 100)
     public static int mediumMin = 4;
-    @Comment({"The amount of ore (In percent of nearby stone) to qualify as a motherload [range 1 ~ 100, default 6]"})
+
+    @Comment({"The amount of ore (In percent of nearby stone) to qualify as a motherload [default 6]"})
+    @RangeInt(min = 1, max = 100)
     public static int largeMin = 6;
+
+    @Comment("List of additional blocks to detect. Use the format 'modid:registryname'")
+    public static String[] ORES = {};
 
 }

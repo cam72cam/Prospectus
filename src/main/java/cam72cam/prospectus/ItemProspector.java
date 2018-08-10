@@ -33,10 +33,9 @@ public class ItemProspector extends ItemTool {
 
 		setUnlocalizedName(Prospectus.MODID + ":" + NAME + VARIANT);
 		setRegistryName(new ResourceLocation(Prospectus.MODID, NAME + VARIANT));
-		Prospectus.ITEMS.add(this);
 	}
 
-	public void sendRecipe(){
+	void sendRecipe(){
 		String ingot;
 		switch(VARIANT){
 			case "wood": ingot = "plankWood"; break;
@@ -64,23 +63,20 @@ public class ItemProspector extends ItemTool {
 		int radius = Config.globalRadius;
 
 		int upperbound = Config.shouldScanAbove ? -radius:0;
-		
+
 		for (int x = -radius; x < radius; x++) {
-			for (int y = upperbound; y < radius; y++) {
+			for (int y = -radius; y < upperbound; y++) {
 				for (int z = -radius; z < radius; z++) {
 					if (Math.random() * 100 < accuracy) {
-						BlockPos curr = pos.down(y).east(x).north(z);
+						BlockPos curr = pos.add(x,y,z);
 						IBlockState state = world.getBlockState(curr);
-						//String name = state.getBlock().getLocalizedName();
-						@SuppressWarnings("deprecation")
-						String name = state.getBlock().getItem(world, curr, state).getDisplayName();
-						if (! name.toLowerCase().contains("ore")) {
-							continue;
-						}
-						if (!counts.containsKey(name) ) {
-							counts.put(name, 0);
-						}
-						counts.put(name, counts.get(name) + 1);
+						String name = state.getBlock().getPickBlock(state, null, world, curr, null).getDisplayName();
+						if (name.toLowerCase().contains("ore") || Prospectus.isBlockWhitelisted(state.getBlock().getRegistryName())) {
+                            if (!counts.containsKey(name)) {
+                                counts.put(name, 0);
+                            }
+                            counts.put(name, counts.get(name) + 1);
+                        }
 					}
 				}
 			}
