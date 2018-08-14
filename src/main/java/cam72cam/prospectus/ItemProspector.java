@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -27,7 +28,7 @@ public class ItemProspector extends ItemTool {
 
 	ItemProspector(Item.ToolMaterial type, int accuracy) {
 		super(type, new HashSet<>());
-        
+
 		this.accuracy = accuracy;
 		this.VARIANT = type.toString().toLowerCase();
 
@@ -49,16 +50,16 @@ public class ItemProspector extends ItemTool {
 		else
 			Prospectus.addRecipe(new ItemStack(this), " II", "IS ", " S ", 'S', "stickWood", 'I', ingot);
 	}
-	
+
 	@Override
 	@Nonnull
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (world.isRemote) {
 			return EnumActionResult.PASS;
 		}
-		
+
 		player.getHeldItem(hand).damageItem(1, player);
-		
+
 		Map<String, Integer> counts = new HashMap<>();
 		int radius = Config.globalRadius;
 
@@ -72,41 +73,41 @@ public class ItemProspector extends ItemTool {
 						IBlockState state = world.getBlockState(curr);
 						String name = state.getBlock().getPickBlock(state, null, world, curr, null).getDisplayName();
 						if (name.toLowerCase().contains("ore") || Prospectus.isBlockWhitelisted(state.getBlock().getRegistryName())) {
-                            if (!counts.containsKey(name)) {
-                                counts.put(name, 0);
-                            }
-                            counts.put(name, counts.get(name) + 1);
-                        }
+							if (!counts.containsKey(name)) {
+								counts.put(name, 0);
+							}
+							counts.put(name, counts.get(name) + 1);
+						}
 					}
 				}
 			}
 		}
 		if(!counts.keySet().isEmpty()) {
-			player.sendMessage(new TextComponentString("Found: "));
+			player.sendMessage(new TextComponentString(I18n.format("prospectus.found") + " "));
 			for (String key : counts.keySet()) {
 				String val;
 				Integer count = counts.get(key);
 				double scale = Math.pow(radius, 3) * 0.01; // This now searches based on the % of nearby blocks which are ore
 				if (count < Config.traceMin * scale) {
-					val = "Traces of ";
+					val = I18n.format("prospectus.traces");
 				} else if (count < Config.smallMin * scale) {
-					val = "A Small Sample of ";
+					val = I18n.format("prospectus.smallSample");
 				} else if (count < Config.mediumMin * scale) {
-					val = "A Medium Sample of ";
+					val = I18n.format("prospectus.mediumSample");
 				} else if (count < Config.largeMin * scale) {
-					val = "A Large Sample of ";
+					val = I18n.format("prospectus.largeSample");
 				} else {
-					val = "The Motherload of ";
+					val = I18n.format("prospectus.motherload");
 				}
 
-				player.sendMessage(new TextComponentString("  " + val + key));
+				player.sendMessage(new TextComponentString("  " + val + " " + key));
 			}
 		}
 		else {
-			player.sendMessage(new TextComponentString("Found nothing of interest."));
+			player.sendMessage(new TextComponentString(I18n.format("prospectus.foundNothing")));
 		}
-		
-		
+
+
 		return EnumActionResult.PASS;
 	}
 }

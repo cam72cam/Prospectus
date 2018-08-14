@@ -11,3 +11,11 @@ item.prospectus:item_prospector_tin.name=Tin Prospecting Pick
 item.prospectus:item_prospector_invar.name=Invar Prospecting Pick
 item.prospectus:item_prospector_steel.name=Steel Prospecting Pick
 item.prospectus:item_prospector_bronze.name=Bronze Prospecting Pick
+
+prospectus.found=Found:
+prospectus.foundNothing=Found nothing of interest
+prospectus.traces=Traces of
+prospectus.smallSample=A small sample of
+prospectus.mediumSample=A medium sample of
+prospectus.largeSample=A large sample of
+prospectus.motherload=The motherload of

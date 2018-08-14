@@ -31,7 +31,7 @@ import java.util.List;
 public class Prospectus
 {
     static final String MODID = "prospectus";
-    static final String VERSION = "1.4";
+    static final String VERSION = "1.5";
 
     private static List<ItemProspector> ITEMS = new ArrayList<>();
     private static List<ResourceLocation> ORES = new ArrayList<>();
