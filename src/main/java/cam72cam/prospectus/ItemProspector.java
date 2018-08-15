@@ -72,7 +72,7 @@ public class ItemProspector extends ItemTool {
 						BlockPos curr = pos.add(x,y,z);
 						IBlockState state = world.getBlockState(curr);
 						String name = state.getBlock().getPickBlock(state, null, world, curr, null).getDisplayName();
-						if (name.toLowerCase().contains("ore") || Prospectus.isBlockWhitelisted(state.getBlock().getRegistryName())) {
+						if (name.toLowerCase().contains(I18n.format("prospectus.ore").toLowerCase()) || Prospectus.isBlockWhitelisted(state.getBlock().getRegistryName())) {
 							if (!counts.containsKey(name)) {
 								counts.put(name, 0);
 							}

@@ -12,7 +12,7 @@ item.prospectus:item_prospector_invar.name=Инваровый геологиче
 item.prospectus:item_prospector_steel.name=Стальной геологический молоток
 item.prospectus:item_prospector_bronze.name=Бронзовый геологический молоток
 
-prospectus.ore=руды
+prospectus.ore=руда
 prospectus.found=Найднео:
 prospectus.foundNothing=Не найдено ничего интересного
 prospectus.traces=Следы

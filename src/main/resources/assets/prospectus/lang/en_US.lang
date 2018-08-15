@@ -12,6 +12,9 @@ item.prospectus:item_prospector_invar.name=Invar Prospecting Pick
 item.prospectus:item_prospector_steel.name=Steel Prospecting Pick
 item.prospectus:item_prospector_bronze.name=Bronze Prospecting Pick
 
+# For translations: this is the keyword that indicates that a block is an ore block. Capitals are ignored
+prospectus.ore=Ore
+
 prospectus.found=Found:
 prospectus.foundNothing=Found nothing of interest
 prospectus.traces=Traces of
