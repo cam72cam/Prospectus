@@ -1,0 +1,22 @@
+item.prospectus:item_prospector_stone.name=Каменный геологический молоток
+item.prospectus:item_prospector_iron.name=Железный геологический молоток
+item.prospectus:item_prospector_diamond.name=Алмазный геологический молоток
+item.prospectus:item_prospector_wood.name=Деревянный геологический молоток
+item.prospectus:item_prospector_gold.name=Золотой геологический молоток
+item.prospectus:item_prospector_copper.name=Медный геологический молоток
+item.prospectus:item_prospector_lead.name=Свинцовый геологический молоток
+item.prospectus:item_prospector_silver.name=Серебряный геологический молоток
+item.prospectus:item_prospector_aluminum.name=Алюминиевый геологический молоток
+item.prospectus:item_prospector_tin.name=Оловянный геологический молоток
+item.prospectus:item_prospector_invar.name=Инваровый геологический молоток
+item.prospectus:item_prospector_steel.name=Стальной геологический молоток
+item.prospectus:item_prospector_bronze.name=Бронзовый геологический молоток
+
+prospectus.ore=руды
+prospectus.found=Найднео:
+prospectus.foundNothing=Не найдено ничего интересного
+prospectus.traces=Следы
+prospectus.smallSample=Маленький образец
+prospectus.mediumSample=Средний образец
+prospectus.largeSample=Большой образец
+prospectus.motherload=Жила
