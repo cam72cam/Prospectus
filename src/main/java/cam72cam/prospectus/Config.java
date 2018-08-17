@@ -17,56 +17,69 @@ public class Config {
     @Comment({"Upsidown pickaxe recipe or slightly bent pickaxe recipe?"})
     public static boolean useUpsidownRecipe = true;
 
-    @Comment({"Accuracy of stone pick [default 5]"})
+    @Comment({"Accuracy of wooden pick [default 5]"})
     @RangeInt(min = 1, max = 100)
+    @RequiresMcRestart
     public static int WOOD_ACC = 5;
 
     @Comment({"Accuracy of stone pick [default 5]"})
     @RangeInt(min = 1, max = 100)
+    @RequiresMcRestart
     public static int STONE_ACC = 5;
 
     @Comment({"Accuracy of iron pick [default 20]"})
     @RangeInt(min = 1, max = 100)
+    @RequiresMcRestart
     public static int IRON_ACC = 20;
 
     @Comment({"Accuracy of stone pick [default 5]"})
     @RangeInt(min = 1, max = 100)
+    @RequiresMcRestart
     public static int GOLD_ACC = 15;
 
     @Comment({"Accuracy of diamond pick [default 60]"})
     @RangeInt(min = 1, max = 100)
+    @RequiresMcRestart
     public static int DIAMOND_ACC = 50;
 
     @Comment({"Accuracy of copper pick [default 10]"})
     @RangeInt(min = 1, max = 100)
+    @RequiresMcRestart
     public static int COPPER_ACC = 10;
 
     @Comment({"Accuracy of tin pick [default 15]"})
     @RangeInt(min = 1, max = 100)
+    @RequiresMcRestart
     public static int TIN_ACC = 15;
 
     @Comment({"Accuracy of lead pick [default 10]"})
     @RangeInt(min = 1, max = 100)
+    @RequiresMcRestart
     public static int LEAD_ACC = 20;
 
     @Comment({"Accuracy of silver pick [default 15]"})
     @RangeInt(min = 1, max = 100)
+    @RequiresMcRestart
     public static int SILVER_ACC = 15;
 
     @Comment({"Accuracy of silver pick [default 15]"})
     @RangeInt(min = 1, max = 100)
+    @RequiresMcRestart
     public static int ALUMINUM_ACC = 25;
 
     @Comment({"Accuracy of bronze pick [default 35]"})
     @RangeInt(min = 1, max = 100)
+    @RequiresMcRestart
     public static int BRONZE_ACC = 35;
 
     @Comment({"Accuracy of invar pick [default 65]"})
     @RangeInt(min = 1, max = 100)
+    @RequiresMcRestart
     public static int INVAR_ACC = 45;
 
     @Comment({"Accuracy of steel pick [default 80]"})
     @RangeInt(min = 1, max = 100)
+    @RequiresMcRestart
     public static int STEEL_ACC = 60;
 
     @Comment({"The amount of ore (In percent of nearby stone) to qualify as a small sample [default 1]"})

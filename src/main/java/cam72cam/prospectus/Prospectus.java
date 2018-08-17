@@ -31,10 +31,10 @@ import java.util.stream.Collectors;
 public class Prospectus
 {
     static final String MODID = "prospectus";
-    static final String VERSION = "1.5";
+    static final String VERSION = "1.6";
 
-    private static List<ItemProspector> ITEMS = new ArrayList<>();
-    private static Set<ResourceLocation> ORES = new HashSet<>();
+    private static List<ItemProspector> ITEMS;
+    private static Set<ResourceLocation> ORES;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -57,6 +57,8 @@ public class Prospectus
     @SubscribeEvent
     public void registerItems(RegistryEvent.Register<Item> event)
     {
+        ITEMS = new ArrayList<>();
+
         ITEMS.add(new ItemProspector(ToolMaterial.WOOD, Config.WOOD_ACC));
         ITEMS.add(new ItemProspector(ToolMaterial.STONE, Config.STONE_ACC));
         ITEMS.add(new ItemProspector(ToolMaterial.IRON, Config.IRON_ACC));
@@ -102,13 +104,10 @@ public class Prospectus
 
     private static void reloadOreList()
     {
-        // Add whitelisted ores
-        for (String s : Config.ORES)
-            ORES.add(resLocFromString(s));
-
+        ORES = new HashSet<>();
         // Add ore-dictionary guesses
         for (String s : OreDictionary.getOreNames())
-            if(s.length() >= 4 && s.startsWith("ore") && Character.isLowerCase(s.charAt(0)))
+            if(s.length() >= 4 && s.startsWith("ore") && !Character.isLowerCase(s.charAt(3)))
                 ORES.addAll(OreDictionary.getOres(s)
                         .stream()
                         .map(x -> x.getItem().getRegistryName())
@@ -118,10 +117,12 @@ public class Prospectus
         ORES.removeIf(x -> Arrays.stream(Config.BLACKLIST)
                 .anyMatch(y -> x.equals(resLocFromString(y))));
 
+        // Add whitelisted ores
+        for (String s : Config.ORES)
+            ORES.add(resLocFromString(s));
+
         // cleanup
         ORES.removeIf(Objects::isNull);
-
-        ORES.forEach(p -> System.out.println("List: "+p.toString()));
     }
 
     @Nullable

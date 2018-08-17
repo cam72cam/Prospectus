@@ -3,7 +3,7 @@
   "modid": "prospectus",
   "name": "Prospectus",
   "description": "Adds prospecting mechanic to the game",
-  "version": "",
+  "version": "1.6",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",

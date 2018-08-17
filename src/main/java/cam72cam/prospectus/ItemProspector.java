@@ -3,6 +3,8 @@ package cam72cam.prospectus;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
@@ -65,20 +67,22 @@ public class ItemProspector extends ItemTool {
 
 		int upperbound = Config.shouldScanAbove ? -radius:0;
 
-		for (int x = -radius; x < radius; x++) {
-			for (int y = -radius; y < upperbound; y++) {
-				for (int z = -radius; z < radius; z++) {
-					if (Math.random() * 100 < accuracy) {
-						BlockPos curr = pos.add(x,y,z);
-						IBlockState state = world.getBlockState(curr);
-						String name = state.getBlock().getPickBlock(state, null, world, curr, null).getDisplayName();
-						if (name.toLowerCase().contains(I18n.format("prospectus.ore").toLowerCase()) || Prospectus.isBlockWhitelisted(state.getBlock().getRegistryName())) {
-							if (!counts.containsKey(name)) {
-								counts.put(name, 0);
-							}
-							counts.put(name, counts.get(name) + 1);
-						}
-					}
+		for (int x = -radius; x <= radius; x++) {
+			for (int y = -radius; y <= upperbound; y++) {
+				for (int z = -radius; z <= radius; z++) {
+                    if(accuracy < Math.random() * 100)
+                        continue;
+
+                    // noinspection ConstantConditions
+                    IBlockState state = world.getBlockState(pos.add(x,y,z));
+                    ResourceLocation key = state.getBlock().getRegistryName();
+                    String name = state.getBlock().getPickBlock(state, null, world, pos.add(x,y,z), null).getDisplayName();
+                    if (Prospectus.isBlockWhitelisted(key)) {
+                        if (!counts.containsKey(name)) {
+                            counts.put(name, 0);
+                        }
+                        counts.put(name, counts.get(name) + 1);
+                    }
 				}
 			}
 		}
@@ -106,8 +110,6 @@ public class ItemProspector extends ItemTool {
 		else {
 			player.sendMessage(new TextComponentString(I18n.format("prospectus.foundNothing")));
 		}
-
-
 		return EnumActionResult.PASS;
 	}
 }
