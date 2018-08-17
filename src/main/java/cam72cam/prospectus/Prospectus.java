@@ -24,8 +24,8 @@ import net.minecraftforge.registries.GameData;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Mod(modid = Prospectus.MODID, version = Prospectus.VERSION)
 public class Prospectus
@@ -34,7 +34,7 @@ public class Prospectus
     static final String VERSION = "1.5";
 
     private static List<ItemProspector> ITEMS = new ArrayList<>();
-    private static List<ResourceLocation> ORES = new ArrayList<>();
+    private static Set<ResourceLocation> ORES = new HashSet<>();
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -51,12 +51,7 @@ public class Prospectus
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        for (String s : Config.ORES) {
-            int colon = s.indexOf(':');
-            if (colon != -1)
-                ORES.add(new ResourceLocation(s.substring(0, colon), s.substring(colon + 1)));
-        }
-        ORES.forEach(p -> System.out.println("List: "+p.toString()));
+        reloadOreList();
     }
 
     @SubscribeEvent
@@ -87,6 +82,7 @@ public class Prospectus
 	public void configChanged(OnConfigChangedEvent event) {
 		if (event.getModID().equals(MODID)) {
 			ConfigManager.sync(MODID, net.minecraftforge.common.config.Config.Type.INSTANCE);
+			reloadOreList();
 		}
 	}
     
@@ -103,12 +99,47 @@ public class Prospectus
         List<ItemStack> ingots = OreDictionary.getOres("ingot"+name);
         return !ingots.isEmpty();
     }
+
+    private static void reloadOreList()
+    {
+        // Add whitelisted ores
+        for (String s : Config.ORES)
+            ORES.add(resLocFromString(s));
+
+        // Add ore-dictionary guesses
+        for (String s : OreDictionary.getOreNames())
+            if(s.length() >= 4 && s.startsWith("ore") && Character.isLowerCase(s.charAt(0)))
+                ORES.addAll(OreDictionary.getOres(s)
+                        .stream()
+                        .map(x -> x.getItem().getRegistryName())
+                        .collect(Collectors.toList()));
+
+        // Remove blacklisted ores
+        ORES.removeIf(x -> Arrays.stream(Config.BLACKLIST)
+                .anyMatch(y -> x.equals(resLocFromString(y))));
+
+        // cleanup
+        ORES.removeIf(Objects::isNull);
+
+        ORES.forEach(p -> System.out.println("List: "+p.toString()));
+    }
+
+    @Nullable
+    private static ResourceLocation resLocFromString(String s)
+    {
+        int colon = s.indexOf(':');
+        if (colon != -1)
+            return new ResourceLocation(s.substring(0, colon), s.substring(colon + 1));
+        return null;
+    }
+
     static void addRecipe(@Nonnull ItemStack output, Object... params) {
         ResourceLocation location = new ResourceLocation(MODID,"recipe_"+output.getDisplayName());
         ShapedOreRecipe recipe = new ShapedOreRecipe(location, output, params);
         recipe.setRegistryName(location);
         GameData.register_impl(recipe);
     }
+
     static boolean isBlockWhitelisted(@Nullable ResourceLocation loc)
     {
         return loc != null && ORES.contains(loc);

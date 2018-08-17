@@ -88,4 +88,7 @@ public class Config {
     @Comment("List of additional blocks to detect. Use the format 'modid:registryname'")
     public static String[] ORES = {};
 
+    @Comment("List of ores to blacklist. Use the format 'modid:registryname'")
+    public static String[] BLACKLIST = {};
+
 }
