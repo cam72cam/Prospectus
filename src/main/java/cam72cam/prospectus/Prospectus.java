@@ -27,11 +27,12 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Mod(modid = Prospectus.MODID, version = Prospectus.VERSION)
+@Mod(modid = Prospectus.MODID, version = Prospectus.VERSION, dependencies = Prospectus.DEPENDENCIES)
 public class Prospectus
 {
     static final String MODID = "prospectus";
     static final String VERSION = "1.6";
+    static final String DEPENDENCIES = "required-after:forge@[14.23.2.2611,15.0.0.0);";
 
     private static List<ItemProspector> ITEMS;
     private static Set<ResourceLocation> ORES;

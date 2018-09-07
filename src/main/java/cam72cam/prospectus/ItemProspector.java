@@ -1,13 +1,6 @@
 package cam72cam.prospectus;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,9 +11,13 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 public class ItemProspector extends ItemTool {
 
@@ -87,28 +84,28 @@ public class ItemProspector extends ItemTool {
 			}
 		}
 		if(!counts.keySet().isEmpty()) {
-			player.sendMessage(new TextComponentString(I18n.format("prospectus.found") + " "));
+			player.sendMessage(new TextComponentTranslation("prospectus.found"));
 			for (String key : counts.keySet()) {
-				String val;
+				TextComponentTranslation val;
 				Integer count = counts.get(key);
 				double scale = Math.pow(radius, 3) * 0.01; // This now searches based on the % of nearby blocks which are ore
 				if (count < Config.traceMin * scale) {
-					val = I18n.format("prospectus.traces");
+					val = new TextComponentTranslation("prospectus.traces");
 				} else if (count < Config.smallMin * scale) {
-					val = I18n.format("prospectus.smallSample");
+					val = new TextComponentTranslation("prospectus.smallSample");
 				} else if (count < Config.mediumMin * scale) {
-					val = I18n.format("prospectus.mediumSample");
+					val = new TextComponentTranslation("prospectus.mediumSample");
 				} else if (count < Config.largeMin * scale) {
-					val = I18n.format("prospectus.largeSample");
+					val = new TextComponentTranslation("prospectus.largeSample");
 				} else {
-					val = I18n.format("prospectus.motherload");
+					val = new TextComponentTranslation("prospectus.motherload");
 				}
 
-				player.sendMessage(new TextComponentString("  " + val + " " + key));
+				player.sendMessage(new TextComponentString("  ").appendSibling(val).appendText(" " + key));
 			}
 		}
 		else {
-			player.sendMessage(new TextComponentString(I18n.format("prospectus.foundNothing")));
+			player.sendMessage(new TextComponentTranslation("prospectus.foundNothing"));
 		}
 		return EnumActionResult.PASS;
 	}
