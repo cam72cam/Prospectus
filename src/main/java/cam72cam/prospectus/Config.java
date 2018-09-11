@@ -1,6 +1,8 @@
 package cam72cam.prospectus;
 
-import net.minecraftforge.common.config.Config.*;
+import net.minecraftforge.common.config.Config.Comment;
+import net.minecraftforge.common.config.Config.RangeInt;
+import net.minecraftforge.common.config.Config.RequiresMcRestart;
 
 import static cam72cam.prospectus.Prospectus.MODID;
 
@@ -98,10 +100,10 @@ public class Config {
     @RangeInt(min = 1, max = 100)
     public static int largeMin = 6;
 
-    @Comment("List of additional blocks to detect. Use the format 'modid:registryname'")
+    @Comment("List of additional blocks to detect. Use the format 'modid:registryname' or 'modid:registryname:metadata'")
     public static String[] ORES = {};
 
-    @Comment("List of ores to blacklist. Use the format 'modid:registryname'")
+    @Comment("List of ores to blacklist. Use the format 'modid:registryname' or 'modid:registryname:metadata'")
     public static String[] BLACKLIST = {};
 
 }

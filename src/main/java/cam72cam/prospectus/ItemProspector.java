@@ -70,11 +70,10 @@ public class ItemProspector extends ItemTool {
                     if(accuracy < Math.random() * 100)
                         continue;
 
-                    // noinspection ConstantConditions
                     IBlockState state = world.getBlockState(pos.add(x,y,z));
-                    ResourceLocation key = state.getBlock().getRegistryName();
-                    String name = state.getBlock().getPickBlock(state, null, world, pos.add(x,y,z), null).getDisplayName();
-                    if (Prospectus.isBlockWhitelisted(key)) {
+					ItemStack stack = state.getBlock().getPickBlock(state, null, world, pos.add(x, y, z), null);
+					String name = stack.getDisplayName();
+					if (Prospectus.isStackWhitelisted(stack)) {
                         if (!counts.containsKey(name)) {
                             counts.put(name, 0);
                         }

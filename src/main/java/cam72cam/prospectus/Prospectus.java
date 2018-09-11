@@ -18,28 +18,44 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.registries.GameData;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Mod(modid = Prospectus.MODID, version = Prospectus.VERSION, dependencies = Prospectus.DEPENDENCIES)
 public class Prospectus
 {
     static final String MODID = "prospectus";
-    static final String VERSION = "1.6";
+    static final String VERSION = "1.8";
     static final String DEPENDENCIES = "required-after:forge@[14.23.2.2611,15.0.0.0);";
 
     private static List<ItemProspector> ITEMS;
-    private static Set<ResourceLocation> ORES;
+    private static Set<ItemStack> ORES;
+    private static Logger log;
 
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(this);
+    private static void reloadOreList() {
+        ORES = new HashSet<>();
+
+        // Add ore-dictionary guesses
+        for (String s : OreDictionary.getOreNames())
+            if (s.length() >= 4 && s.startsWith("ore") && !Character.isLowerCase(s.charAt(3)))
+                ORES.addAll(OreDictionary.getOres(s));
+
+        // Remove blacklisted ores
+        ORES.removeIf(x -> Arrays.stream(Config.BLACKLIST).anyMatch(y -> doStacksMatch(x, toStack(y))));
+
+        // Add whitelisted ores
+        for (String s : Config.ORES)
+            ORES.add(toStack(s));
+
+        // cleanup
+        ORES.removeIf(Objects::isNull);
     }
 
     @EventHandler
@@ -103,36 +119,41 @@ public class Prospectus
         return !ingots.isEmpty();
     }
 
-    private static void reloadOreList()
-    {
-        ORES = new HashSet<>();
-        // Add ore-dictionary guesses
-        for (String s : OreDictionary.getOreNames())
-            if(s.length() >= 4 && s.startsWith("ore") && !Character.isLowerCase(s.charAt(3)))
-                ORES.addAll(OreDictionary.getOres(s)
-                        .stream()
-                        .map(x -> x.getItem().getRegistryName())
-                        .collect(Collectors.toList()));
-
-        // Remove blacklisted ores
-        ORES.removeIf(x -> Arrays.stream(Config.BLACKLIST)
-                .anyMatch(y -> x.equals(resLocFromString(y))));
-
-        // Add whitelisted ores
-        for (String s : Config.ORES)
-            ORES.add(resLocFromString(s));
-
-        // cleanup
-        ORES.removeIf(Objects::isNull);
+    @Nullable
+    private static ItemStack toStack(String s) {
+        try {
+            int colon = s.indexOf(':');
+            int colon2 = s.lastIndexOf(':');
+            if (colon == colon2) {
+                // Construct a generic stack
+                Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(s.substring(0, colon), s.substring(colon + 1, colon2)));
+                if (item == null) throw new Exception("Item is null, no metadata");
+                return new ItemStack(item, 1, OreDictionary.WILDCARD_VALUE);
+            } else {
+                // Construct a stack with metadata
+                Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(s.substring(0, colon), s.substring(colon + 1, colon2)));
+                if (item == null) throw new Exception("Item is null, with metadata");
+                return new ItemStack(item, 1, Integer.valueOf(s.substring(colon2 + 1)));
+            }
+        } catch (Exception e) {
+            log.warn("Illegal Entry in Prospectus config: {}, {}", s, e);
+            return null;
+        }
     }
 
-    @Nullable
-    private static ResourceLocation resLocFromString(String s)
-    {
-        int colon = s.indexOf(':');
-        if (colon != -1)
-            return new ResourceLocation(s.substring(0, colon), s.substring(colon + 1));
-        return null;
+    private static boolean doStacksMatch(@Nullable ItemStack stack1, @Nullable ItemStack stack2) {
+        if (stack1 == null || stack2 == null || stack1.isEmpty() || stack2.isEmpty()) return false;
+        // Case items are different
+        if (stack1.getItem() != stack2.getItem()) return false;
+        // Case metadata is wildcard on either:
+        if (stack1.getMetadata() == OreDictionary.WILDCARD_VALUE || stack2.getMetadata() == OreDictionary.WILDCARD_VALUE)
+            return true;
+        // Check if meta values match
+        return stack1.getMetadata() == stack2.getMetadata();
+    }
+
+    static boolean isStackWhitelisted(@Nonnull ItemStack stack) {
+        return ORES.stream().anyMatch(x -> doStacksMatch(x, stack));
     }
 
     static void addRecipe(@Nonnull ItemStack output, Object... params) {
@@ -142,8 +163,9 @@ public class Prospectus
         GameData.register_impl(recipe);
     }
 
-    static boolean isBlockWhitelisted(@Nullable ResourceLocation loc)
-    {
-        return loc != null && ORES.contains(loc);
+    @EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        MinecraftForge.EVENT_BUS.register(this);
+        log = event.getModLog();
     }
 }
