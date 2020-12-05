@@ -10,6 +10,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -70,8 +72,10 @@ public class ItemProspector extends ItemTool {
                     if(accuracy < Math.random() * 100)
                         continue;
 
+                    RayTraceResult rayTrace = new RayTraceResult(new Vec3d(hitX, hitY, hitZ), facing, pos);
+                    
                     IBlockState state = world.getBlockState(pos.add(x,y,z));
-					ItemStack stack = state.getBlock().getPickBlock(state, null, world, pos.add(x, y, z), null);
+					ItemStack stack = state.getBlock().getPickBlock(state, rayTrace, world, pos.add(x, y, z), player);
 					String name = stack.getDisplayName();
 					if (Prospectus.isStackWhitelisted(stack)) {
                         if (!counts.containsKey(name)) {
